@@ -1,4 +1,4 @@
-// --- CEK LOGIN ---
+
 int cekLogin(char *user, char *pass, char *roleWajib) {
     FILE *fp = fopen(FILE_LOGIN, "r");
     char buffer[100];
@@ -23,7 +23,7 @@ int cekLogin(char *user, char *pass, char *roleWajib) {
     return loginSukses;
 }
 
-// --- MENU ADMIN ---
+
 void menuAdmin() {
     char id[20], pass[20];
     printf("\n--- LOGIN ADMIN ---\n");
@@ -47,7 +47,7 @@ void menuAdmin() {
     }
 }
 
-// --- MENU MAHASISWA ---
+
 void menuMahasiswa() {
     char nim[20], pass[20];
     printf("\n--- LOGIN MAHASISWA ---\n");
