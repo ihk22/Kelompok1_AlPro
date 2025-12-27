@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h> 
+#include "auth_menu.c"   // Bagian 2 - Putri (Autentikasi & Menu)
 
 #define MAX_PERTEMUAN 18.0
 #define FILE_NILAI "nilai.txt"
@@ -42,8 +43,8 @@ void bersihkanBuffer();
 int cekValidasiAngka(char *str);
 
 int main() {
-    setvbuf(stdout, NULL, _IONBF, 0); 
-    menuUtama();
+    setvbuf(stdout, NULL, _IONBF, 0);
+    menuAuth();     // Bagian 2 - Putri
     return 0;
 }
 
@@ -107,6 +108,11 @@ void menuUtama() {
         }
     } while (pilihan != 3);
 }
+
+
+// Bagian 2: Putri Ayu Dahlia Nainggolan
+
+
 
 //bagian 3_Evandra Akmal Syahputra
 
