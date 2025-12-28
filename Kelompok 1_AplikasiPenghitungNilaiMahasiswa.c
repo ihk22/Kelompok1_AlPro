@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h> 
-#include "auth_menu.c"   // Bagian 2 - Putri (Autentikasi & Menu)
+#include <ctype.h>
 
 #define MAX_PERTEMUAN 18.0
 #define FILE_NILAI "nilai.txt"
 #define FILE_LOGIN "login.txt"
-#define FILE_TEMP "temp_nilai.txt"
+#define FILE_TEMP "temp.txt"
+
+void inputDataNilai();
+void lihatNilaiSesuaiNIM(char *nim);
+void bersihkanBuffer();
+
+#include "auth_menu.c" // Bagian 2 - Putri (Autentikasi dan Menu)
 
 struct Mahasiswa {
     char nim[20];
@@ -29,9 +34,7 @@ struct Akun {
 };
 
 void menuUtama();
-int cekLogin(char *user, char *pass, char *roleWajib);
 int cekNIMTerdaftar(char *nimCari); // FUNGSI BARU
-void menuAdmin();
 void menuMahasiswa();
 void inputDataNilai();
 void hitungNilai(struct Mahasiswa *mhs);
@@ -44,7 +47,13 @@ int cekValidasiAngka(char *str);
 
 int main() {
     setvbuf(stdout, NULL, _IONBF, 0);
-    menuAuth();     // Bagian 2 - Putri
+    menuUtama();
+
+    char userLogin[50];
+    char passLogin[50];
+    char roleLogin[10];
+    
+    cekLogin(userLogin, passLogin, roleLogin);     // Bagian 2 - Putri
     return 0;
 }
 
@@ -110,72 +119,7 @@ void menuUtama() {
 }
 
 
-// Bagian 2: Putri Ayu Dahlia Nainggolan
-
-int cekLogin(char *user, char *pass, char *roleWajib) {
-    FILE *fp = fopen(FILE_LOGIN, "r");
-    char buffer[100];
-    char fileUser[20], filePass[20], fileRole[10];
-    int loginSukses = 0;
-
-    if (fp == NULL) {
-        printf("[!] ERROR: File '%s' tidak ditemukan!\n", FILE_LOGIN);
-        return 0;
-    }
-
-    while (fgets(buffer, sizeof(buffer), fp)) {
-        sscanf(buffer, "%[^|]|%[^|]|%s", fileUser, filePass, fileRole);
-        if (strcmp(user, fileUser) == 0 &&
-            strcmp(pass, filePass) == 0 &&
-            strcmp(roleWajib, fileRole) == 0) {
-            loginSukses = 1;
-            break;
-        }
-    }
-    fclose(fp);
-    return loginSukses;
-}
-
-
-void menuAdmin() {
-    char id[20], pass[20];
-    printf("\n--- LOGIN ADMIN ---\n");
-    printf("ID Admin : "); scanf("%s", id);
-    printf("Password : "); scanf("%s", pass);
-    bersihkanBuffer();
-
-    if (cekLogin(id, pass, "ADMIN")) {
-        int pilihan;
-        do {
-            printf("\n1. Input/Update Nilai\n");
-            printf("2. Kembali\n");
-            printf("Pilihan: ");
-            scanf("%d", &pilihan);
-            bersihkanBuffer();
-            if (pilihan == 1) inputDataNilai();
-        } while (pilihan != 2);
-    } else {
-        printf("[!] Login gagal\n");
-        getchar();
-    }
-}
-
-
-void menuMahasiswa() {
-    char nim[20], pass[20];
-    printf("\n--- LOGIN MAHASISWA ---\n");
-    printf("NIM : "); scanf("%s", nim);
-    printf("Password : "); scanf("%s", pass);
-    bersihkanBuffer();
-
-    if (cekLogin(nim, pass, "MHS")) {
-        lihatNilaiSesuaiNIM(nim);
-    } else {
-        printf("[!] Login gagal\n");
-        getchar();
-    }
-}
-
+// Bagian 2: Putri Ayu Dahlia Nainggolan - auth_menu.c
 
 //bagian 3_Evandra Akmal Syahputra
 
@@ -309,8 +253,8 @@ void lihatNilaiSesuaiNIM(char *cariNIM) {
             &b.nilaiAkhir, &b.grade, b.status);
 
         if (strcmp(b.nim, cariNIM) == 0) {
-            printf("NIM: %s\nNAMA: %s\nNilai Akhir: %.2f\n",
-                b.nim, b.nama, b.nilaiAkhir);
+            printf("NIM: %s\nNama: %s\nKehadiran: %d\nPresensi: %.2f\nKeaktifan: %.2f\nUTS: %.2f\nUAS: %.2f\nNilai Akhir: %.2f\nGrade: %c\nStatus: %s\n", 
+       b.nim, b.nama, b.jumlahKehadiran, b.nilaiPresensi, b.nilaiKeaktifan, b.nilaiUTS, b.nilaiUAS, b.nilaiAkhir, b.grade, b.status);
                 break;
             }
         
